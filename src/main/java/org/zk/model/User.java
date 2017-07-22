@@ -1,9 +1,15 @@
 package org.zk.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 7/16/2017.
  */
-public class User {
+public class User implements Serializable{
+
+
+    private static final long serialVersionUID = 3641942761064124282L;
+
     private Integer id;
     private String username;
 

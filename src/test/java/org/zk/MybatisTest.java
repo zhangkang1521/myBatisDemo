@@ -3,6 +3,7 @@ package org.zk;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.junit.Before;
 import org.junit.Test;
 import org.zk.model.User;
 
@@ -13,24 +14,79 @@ import java.io.InputStream;
  */
 public class MybatisTest {
 
+    SqlSessionFactory sqlSessionFactory;
+
+    @Before
+    public void before() {
+        InputStream in = this.getClass().getClassLoader().getResourceAsStream("mybatis.xml");
+        sqlSessionFactory = new SqlSessionFactoryBuilder().build(in);
+    }
+
+
     @Test
     public void test1() throws Exception{
-        // 1. 加载MyBatis的配置文件：mybatis.xml（它也加载关联的映射文件，也就是mappers结点下的映射文件）
-        InputStream in = this.getClass().getClassLoader().getResourceAsStream("mybatis.xml");
-        // 2. SqlSessionFactoryBuidler实例将通过输入流调用build方法来构建 SqlSession 工厂
-        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(in);
-        // 3. 通过工厂获取 SqlSession 实例，SqlSession 完全包含了面向数据库执行 SQL 命令所需的所有方法。
         SqlSession session = sqlSessionFactory.openSession();
-        // 4. 准备基本信息
-        // 4.1) statement: 用来定位映射文件（StudentMapper.xml）中的语句（通过namespace id + select id)
-        String statement = "org.zk.dao.UserDao.findById";
-        // 4.2) paramter: 传进去的参数，也就是需要获取students表中主键值为1的记录
-        int parameter = 1;
-        // 5. SqlSession 实例来直接执行已映射的 SQL 语句，selectOne表示获取的是一条记录
-        User student = session.selectOne(statement, parameter);
+        User student = session.selectOne("org.zk.dao.UserDao.findById", 1);
         System.out.println(student.getUsername());
-        // 6. 关闭输入流和SqlSession实例
-        in.close();
+        session.close();
+    }
+
+    @Test
+    public void testCacheLevel1() throws Exception{
+        SqlSession session = sqlSessionFactory.openSession();
+        User student = session.selectOne("org.zk.dao.UserDao.findById", 1);
+        // 同一session,一级缓存中查询
+        User student2 = session.selectOne("org.zk.dao.UserDao.findById", 1);
+        System.out.println(student.getUsername());
+        session.close();
+    }
+
+    @Test
+    public void testCacheLevel2() throws Exception{
+
+        SqlSession session = sqlSessionFactory.openSession();
+        SqlSession session2 = sqlSessionFactory.openSession();
+
+        User student = session.selectOne("org.zk.dao.UserDao.findById", 1);
+        session.close(); // 关闭session才将缓存写入
+        User student2 = session2.selectOne("org.zk.dao.UserDao.findById", 1);
+        session2.close();
+    }
+
+    @Test
+    public void testCacheLevel2_clear() throws Exception{
+
+        SqlSession session1 = sqlSessionFactory.openSession();
+        SqlSession session2 = sqlSessionFactory.openSession();
+        SqlSession session3 = sqlSessionFactory.openSession();
+
+        User student = session1.selectOne("org.zk.dao.UserDao.findById", 1);
+        session1.close(); // 关闭session才将缓存写入
+
+        // 清空缓存
+        User user = new User();
+        user.setId(1);
+        user.setUsername("zy");
+        session3.update("org.zk.dao.UserDao.update", user);
+        session3.commit();
+        session3.close();
+
+
+        User student2 = session2.selectOne("org.zk.dao.UserDao.findById", 1);
+        session2.close();
+    }
+
+
+
+
+    @Test
+    public void testUpdate() {
+        SqlSession session = sqlSessionFactory.openSession();
+        User user = new User();
+        user.setId(1);
+        user.setUsername("zy");
+        session.update("org.zk.dao.UserDao.update", user);
+        session.commit();
         session.close();
     }
 }
