@@ -9,4 +9,8 @@ import org.zk.model.User;
 public interface UserDao {
 
     User findById(@Param("id") Integer id);
+
+    int update(User user);
+
+    User findWithClassInfo(@Param("id") Integer id);
 }

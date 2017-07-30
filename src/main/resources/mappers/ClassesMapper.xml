@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zk.dao.ClassDao">
+
+    <!-- 开启二级缓存，默认未开启 -->
+    <cache type="org.mybatis.caches.memcached.MemcachedCache"/>
+
+
+    <select id="findById" parameterType="int" resultType="org.zk.model.Classes">
+        select id as id,class_name as className from tb_class where id = #{id}
+    </select>
+
+    <update id="update" parameterType="org.zk.model.Classes">
+        update tb_class
+        set class_name=#{className}
+        where id=#{id}
+    </update>
+
+
+</mapper>

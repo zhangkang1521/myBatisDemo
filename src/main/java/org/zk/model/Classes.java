@@ -3,16 +3,12 @@ package org.zk.model;
 import java.io.Serializable;
 
 /**
- * Created by Administrator on 7/16/2017.
+ * 班级
+ * Created by Administrator on 7/30/2017.
  */
-public class User implements Serializable{
-
-
-    private static final long serialVersionUID = 3641942761064124282L;
-
+public class Classes implements Serializable{
+    private static final long serialVersionUID = -9038765208392864010L;
     private Integer id;
-    private String username;
-
     private String className;
 
     public Integer getId() {
@@ -21,14 +17,6 @@ public class User implements Serializable{
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getClassName() {

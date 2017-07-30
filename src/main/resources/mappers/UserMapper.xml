@@ -4,8 +4,32 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.zk.dao.UserDao">
 
+    <!-- 开启二级缓存，默认未开启 -->
+    <cache type="org.mybatis.caches.memcached.MemcachedCache"/>
+    <!--<cache/>-->
+
+    <resultMap id="userVoMap" type="org.zk.model.User">
+        <id property="id" column="id" />
+        <result property="username" column="username"/>
+        <result property="className" column="class_name"/>
+    </resultMap>
+
     <select id="findById" parameterType="int" resultType="org.zk.model.User">
         select * from tb_user where id = #{id}
     </select>
+
+    <update id="update" parameterType="org.zk.model.User">
+        update tb_user
+        set username=#{username}
+        where id=#{id}
+    </update>
+
+    <select id="findWithClassInfo" parameterType="int" resultMap="userVoMap">
+        SELECT u.id,u.username,c.class_name
+        FROM tb_user u
+        INNER JOIN tb_class c ON u.class_id=c.id
+        WHERE u.id=#{id}
+    </select>
+
 
 </mapper>
