@@ -12,6 +12,7 @@ public class User implements Serializable{
 
     private Integer id;
     private String username;
+    private String[] interests;
 
     public Integer getId() {
         return id;
@@ -27,5 +28,13 @@ public class User implements Serializable{
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String[] getInterests() {
+        return interests;
+    }
+
+    public void setInterests(String[] interests) {
+        this.interests = interests;
     }
 }

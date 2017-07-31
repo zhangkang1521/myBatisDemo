@@ -4,6 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
+    <!--<typeHandlers>
+        <typeHandler handler="org.zk.type.StringArrayTypeHandler" javaType="[Ljava.lang.String" jdbcType="VARCHAR"/>
+    </typeHandlers>-->
+
     <environments default="development">
         <environment id="development">
             <!-- 事务管理类型，JDBC表示直接使用JDBC的提交和回滚设置，依赖于数据源得到的连接来管理事务 -->
@@ -19,8 +23,9 @@
     </environments>
 
     <mappers>
-        <!-- SQL代码和映射信息配置文件 -->
         <mapper resource="mappers/UserMapper.xml" ></mapper>
     </mappers>
+
+
 
 </configuration>
