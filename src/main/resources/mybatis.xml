@@ -4,6 +4,15 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
+    <settings>
+        <!--
+             开启驼峰,数据库 nick__name可以映射到实体NiCKname，
+             内部实现机制为数据库去掉全部下划线然后大写，实体类属性全部大写，然后对应
+        -->
+        <setting name="mapUnderscoreToCamelCase" value="true" />
+    </settings>
+
+
     <environments default="development">
         <environment id="development">
             <!-- 事务管理类型，JDBC表示直接使用JDBC的提交和回滚设置，依赖于数据源得到的连接来管理事务 -->
