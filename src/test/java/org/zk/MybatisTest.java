@@ -11,6 +11,7 @@ import org.zk.model.User;
 
 import java.io.InputStream;
 import java.io.Reader;
+import java.util.List;
 
 /**
  * Created by Administrator on 7/16/2017.
@@ -43,6 +44,15 @@ public class MybatisTest {
                 = sqlSessionFactory.openSession();
         UserDao userDao = session.getMapper(UserDao.class);
         System.out.println(userDao.findById(1));
+        session.close();
+    }
+
+    @Test
+    public void test3() throws Exception{
+        SqlSession session
+                = sqlSessionFactory.openSession();
+        UserDao userDao = session.getMapper(UserDao.class);
+        List<User> userList = userDao.findList();
         session.close();
     }
 }
