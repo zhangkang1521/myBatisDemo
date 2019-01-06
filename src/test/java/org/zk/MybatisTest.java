@@ -1,13 +1,17 @@
 package org.zk;
 
+import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Before;
 import org.junit.Test;
+import org.zk.dao.UserDao;
 import org.zk.model.User;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 
 /**
  * Created by Administrator on 7/16/2017.
@@ -18,8 +22,13 @@ public class MybatisTest {
 
     @Before
     public void before() {
-        InputStream in = this.getClass().getClassLoader().getResourceAsStream("mybatis.xml");
-        sqlSessionFactory = new SqlSessionFactoryBuilder().build(in);
+        Reader reader = null;
+        try {
+            reader = Resources.getResourceAsReader("mybatis.xml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
     }
 
 
@@ -30,4 +39,13 @@ public class MybatisTest {
         System.out.println(student.getUsername());
         session.close();
     }
+
+    @Test
+    public void test2() throws Exception{
+        SqlSession session = sqlSessionFactory.openSession();
+        UserDao userDao = session.getMapper(UserDao.class);
+        System.out.println(userDao.findById(1).getUsername());
+        session.close();
+    }
+
 }
