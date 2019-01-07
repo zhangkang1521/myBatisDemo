@@ -14,8 +14,6 @@
              http://www.springframework.org/schema/tx
              http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
-    <context:component-scan base-package="org.zk"/>
-
 
     <!-- 整合mybatis -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
@@ -25,20 +23,30 @@
         <property name="password" value="123456"/>
     </bean>
 
+    <!--
+        直接配置属性或使用mybatis配置文件均可
+        1. 实现了InitializingBean接口在afterPropertiesSet方法中buildSqlSessionFactory;
+        2. 实现了FactoryBean接口，getObject返回SqlSessionFactory
+    -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
+        <!--<property name="configLocation" value="classpath:mybatis.xml"/>-->
         <property name="mapperLocations" value="classpath:mappers/*.xml"></property>
     </bean>
 
+    <!-- 实现FactoryBean，getObject方法返回sqlSession.getMapper() -->
+    <!--<bean id="userDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="org.zk.dao.UserDao"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>-->
+
+    <!-- 自动扫描，注册MapperFactoryBean，无须一个个手动配置 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="org.zk.dao" />
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
     </bean>
 
-    <bean id="transactionManager"
-          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource" />
-    </bean>
+
     <!-- 整合mybatis end -->
 
 
