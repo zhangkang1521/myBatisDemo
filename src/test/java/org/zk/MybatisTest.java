@@ -43,7 +43,8 @@ public class MybatisTest {
         SqlSession session
                 = sqlSessionFactory.openSession();
         UserDao userDao = session.getMapper(UserDao.class);
-        User user = userDao.findById(1);
+        User user = userDao.getUser(1L);
+        System.out.println(user.getUsername());
         session.close();
     }
 
