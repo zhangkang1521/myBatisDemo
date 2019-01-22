@@ -1,5 +1,7 @@
 package org.zk;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -12,6 +14,7 @@ import org.zk.model.User;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.util.List;
 
 /**
  * Created by Administrator on 7/16/2017.
@@ -45,6 +48,17 @@ public class MybatisTest {
         SqlSession session = sqlSessionFactory.openSession();
         UserDao userDao = session.getMapper(UserDao.class);
         System.out.println(userDao.findById(1).getUsername());
+        session.close();
+    }
+
+    @Test
+    public void testPage() {
+        SqlSession session = sqlSessionFactory.openSession();
+        UserDao userDao = session.getMapper(UserDao.class);
+        User user = new User();
+//        PageHelper.startPage(2, 10);
+        Object o = userDao.findPageable(user);
+
         session.close();
     }
 
