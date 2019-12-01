@@ -7,4 +7,6 @@ import org.zk.model.User;
  */
 public interface UserDao {
     User findById(int id);
+
+    int insert(User user);
 }

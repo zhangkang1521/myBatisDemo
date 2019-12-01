@@ -4,6 +4,7 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.zk.dao.UserDao;
@@ -19,33 +20,42 @@ import java.io.Reader;
 public class MybatisTest {
 
     SqlSessionFactory sqlSessionFactory;
+    SqlSession session;
 
     @Before
-    public void before() {
-        Reader reader = null;
-        try {
-            reader = Resources.getResourceAsReader("mybatis.xml");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void before() throws Exception{
+        Reader reader = Resources.getResourceAsReader("mybatis.xml");
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+        session = sqlSessionFactory.openSession();
     }
 
-
-    @Test
-    public void test1() throws Exception{
-        SqlSession session = sqlSessionFactory.openSession();
-        User student = session.selectOne("org.zk.dao.UserDao.findById", 1);
-        System.out.println(student.getUsername());
+    @After
+    public void after() {
         session.close();
     }
 
     @Test
-    public void test2() throws Exception{
-        SqlSession session = sqlSessionFactory.openSession();
+    public void testDao(){
         UserDao userDao = session.getMapper(UserDao.class);
         System.out.println(userDao.findById(1).getUsername());
-        session.close();
     }
+
+    @Test
+    public void test1(){
+        User student = session.selectOne("org.zk.dao.UserDao.findById", 1);
+        System.out.println(student.getUsername());
+    }
+
+    @Test
+    public void testInsert(){
+        UserDao userDao = session.getMapper(UserDao.class);
+        User user = new User();
+        user.setUsername("zk");
+        int r = userDao.insert(user);
+        session.commit();
+        System.out.println(user.getId());
+    }
+
+
 
 }
