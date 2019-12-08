@@ -9,10 +9,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.zk.dao.UserDao;
 import org.zk.model.User;
+import org.zk.param.UserParam;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.util.List;
 
 /**
  * Created by Administrator on 7/16/2017.
@@ -35,9 +37,33 @@ public class MybatisTest {
     }
 
     @Test
-    public void testDao(){
+    public void testObjectParam(){
         UserDao userDao = session.getMapper(UserDao.class);
-        System.out.println(userDao.findById(1).getUsername());
+        UserParam userParam = new UserParam();
+        userParam.setUsername("%");
+        List<User> users = userDao.findByParam(userParam);
+        System.out.println(users.size());
+    }
+
+    @Test
+    public void test0Param(){
+        UserDao userDao = session.getMapper(UserDao.class);
+        List<User> users = userDao.findAll();
+        System.out.println(users.size());
+    }
+
+    @Test
+    public void test1Param(){
+        UserDao userDao = session.getMapper(UserDao.class);
+        List<User> users = userDao.findByUserName("%");
+        System.out.println(users.size());
+    }
+
+    @Test
+    public void test2Param(){
+        UserDao userDao = session.getMapper(UserDao.class);
+        List<User> users = userDao.findByIdAndUserName(4, "%");
+        System.out.println(users.size());
     }
 
     @Test
