@@ -34,27 +34,19 @@ public class MybatisTest {
         session.close();
     }
 
-    @Test
-    public void testDao(){
-        UserDao userDao = session.getMapper(UserDao.class);
-        System.out.println(userDao.findById(1).getUsername());
-    }
+
+
+
+
+
 
     @Test
-    public void test1(){
-        User student = session.selectOne("org.zk.dao.UserDao.findById", 1);
-        System.out.println(student.getUsername());
+    public void testParam() {
+        UserDao userDao = session.getMapper(UserDao.class);
+        userDao.findByIdAndUsername(1, "zk");
     }
 
-    @Test
-    public void testInsert(){
-        UserDao userDao = session.getMapper(UserDao.class);
-        User user = new User();
-        user.setUsername("zk");
-        int r = userDao.insert(user);
-        session.commit();
-        System.out.println(user.getId());
-    }
+
 
 
 
