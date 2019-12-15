@@ -5,7 +5,8 @@
 <mapper namespace="org.zk.dao.UserDao">
 
     <!-- 开启二级缓存，默认未开启 -->
-    <cache type="org.mybatis.caches.memcached.MemcachedCache"/>
+    <!--<cache type="org.mybatis.caches.memcached.MemcachedCache"/>-->
+    <cache type="org.mybatis.caches.redis.RedisCache" />
     <!--<cache/>-->
 
     <resultMap id="userVoMap" type="org.zk.model.User">

@@ -96,11 +96,12 @@ public class MybatisTest {
         // 清空缓存
         User user = new User();
         user.setId(1);
-        user.setUsername("zy");
+        user.setUsername("zy2211");
         session3.update("org.zk.dao.UserDao.update", user); // update会清空缓存
-
+        session3.commit();
 
         User student2 = session2.selectOne("org.zk.dao.UserDao.findById", 1);
+        System.out.println(student2.getUsername());
         session2.close();
         session3.close();
     }
