@@ -10,9 +10,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.zk.dao.UserDao;
 import org.zk.model.User;
+import org.zk.page.Page;
+import org.zk.page.PageHelp;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Reader;
 import java.util.List;
 
@@ -55,11 +56,23 @@ public class MybatisTest {
     public void testPage() {
         SqlSession session = sqlSessionFactory.openSession();
         UserDao userDao = session.getMapper(UserDao.class);
-        User user = new User();
-//        PageHelper.startPage(2, 10);
-        Object o = userDao.findPageable(user);
-
+        PageHelper.startPage(2, 5);
+        List page = userDao.findPageable("zk");
+        System.out.println(new PageInfo<>(page));
         session.close();
     }
+
+    @Test
+    public void testMyPage() {
+        SqlSession session = sqlSessionFactory.openSession();
+        UserDao userDao = session.getMapper(UserDao.class);
+        PageHelp.startPage(2, 5);
+        Page page = (Page)userDao.findPageable("zk");
+        System.out.println(page.getCount());
+        System.out.println(page.size());
+        session.close();
+    }
+
+
 
 }

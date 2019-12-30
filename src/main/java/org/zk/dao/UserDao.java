@@ -1,5 +1,6 @@
 package org.zk.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.zk.model.User;
 
 import java.util.List;
@@ -10,5 +11,5 @@ import java.util.List;
 public interface UserDao {
     User findById(int id);
 
-    List<User> findPageable(User user);
+    List<User> findPageable(@Param("username") String username);
 }

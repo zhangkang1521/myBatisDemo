@@ -10,6 +10,11 @@
 
     <select id="findPageable"  resultType="org.zk.model.User">
         select * from tb_user
+        <where>
+            <if test="username != null">
+            username = #{username}
+            </if>
+        </where>
     </select>
 
 </mapper>

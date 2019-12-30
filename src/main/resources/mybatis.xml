@@ -4,8 +4,14 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
+    <settings>
+        <setting name="localCacheScope" value="STATEMENT"/>
+    </settings>
+
     <plugins>
         <plugin interceptor="com.github.pagehelper.PageInterceptor">
+        </plugin>
+        <plugin interceptor="org.zk.page.PageInterceptor">
         </plugin>
         <!--<plugin interceptor="org.zk.comm.SQLStatsInterceptor"/>-->
     </plugins>
