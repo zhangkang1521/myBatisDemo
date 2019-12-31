@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.zk.dao.UserDao;
 import org.zk.model.User;
+import tk.mybatis.mapper.mapperhelper.MapperHelper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,6 +28,9 @@ public class MybatisTest {
         Reader reader = Resources.getResourceAsReader("mybatis.xml");
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
         session = sqlSessionFactory.openSession();
+        // tk
+        MapperHelper mapperHelper = new MapperHelper();
+        mapperHelper.processConfiguration(session.getConfiguration());
     }
 
     @After
@@ -37,7 +41,7 @@ public class MybatisTest {
     @Test
     public void testDao(){
         UserDao userDao = session.getMapper(UserDao.class);
-        System.out.println(userDao.findById(1).getUsername());
+        System.out.println(userDao.selectByPrimaryKey(1));
     }
 
     @Test

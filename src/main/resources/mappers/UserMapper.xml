@@ -4,13 +4,4 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.zk.dao.UserDao">
 
-    <select id="findById" parameterType="int" resultType="org.zk.model.User">
-        select * from tb_user where id = #{id}
-    </select>
-
-    <insert id="insert"  keyProperty="id" keyColumn="id">
-        insert into tb_user(username)
-        values(#{username})
-    </insert>
-
 </mapper>
