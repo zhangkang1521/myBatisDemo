@@ -28,22 +28,37 @@
         1. 实现了InitializingBean接口在afterPropertiesSet方法中buildSqlSessionFactory;
         2. 实现了FactoryBean接口，getObject返回SqlSessionFactory
     -->
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <!--<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">-->
+        <!--<property name="dataSource" ref="dataSource" />-->
+        <!--&lt;!&ndash;<property name="configLocation" value="classpath:mybatis.xml"/>&ndash;&gt;-->
+        <!--<property name="mapperLocations" value="classpath:mappers/*.xml"></property>-->
+    <!--</bean>-->
+
+    <bean id="sqlSessionFactory" class="org.zk.mybatis.MySqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        <!--<property name="configLocation" value="classpath:mybatis.xml"/>-->
         <property name="mapperLocations" value="classpath:mappers/*.xml"></property>
     </bean>
 
     <!-- 实现FactoryBean，getObject方法返回sqlSession.getMapper() -->
-    <!--<bean id="userDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="org.zk.dao.UserDao"/>
-        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
-    </bean>-->
+    <!--<bean id="userDao" class="org.mybatis.spring.mapper.MapperFactoryBean">-->
+        <!--<property name="mapperInterface" value="org.zk.dao.UserDao"/>-->
+        <!--<property name="sqlSessionFactory" ref="sqlSessionFactory"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="userDao" class="org.zk.mybatis.MyMapperFactoryBean">-->
+        <!--<property name="mapperInterface" value="org.zk.dao.UserDao"/>-->
+        <!--<property name="sqlSessionFactory" ref="sqlSessionFactory"/>-->
+    <!--</bean>-->
 
     <!-- 自动扫描，注册MapperFactoryBean，无须一个个手动配置 -->
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    <!--<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->
+        <!--<property name="basePackage" value="org.zk.dao" />-->
+        <!--<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>-->
+    <!--</bean>-->
+
+    <bean class="org.zk.mybatis.MyMapperScanConfigurer">
         <property name="basePackage" value="org.zk.dao" />
-        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
     </bean>
 
 
