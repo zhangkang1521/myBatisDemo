@@ -8,4 +8,8 @@
         select * from tb_user where id = #{id}
     </select>
 
+    <insert id="insert">
+        insert into tb_user(username) values(#{username})
+    </insert>
+
 </mapper>
